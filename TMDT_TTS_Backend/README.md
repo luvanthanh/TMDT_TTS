@@ -1,22 +1,22 @@
-# TMDT_TTS Backend (starter)
+# TMDT_TTS Backend
 
-Stack: Java 21, Spring Boot 3.5.6, Spring Data JPA, PostgreSQL, Spring Security, BCrypt, JWT libraries prepared for auth implementation.
+Backend cửa hàng trực tuyến dùng Java 21, Spring Boot 3.5.6, Spring Data JPA và PostgreSQL.
 
-## Run in IntelliJ
-1. Open this folder as a Maven project.
-2. In pgAdmin 4 create database `TMDT_TTS` and run the finalized SQL schema before starting this app.
-3. Set environment variables `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` to match PostgreSQL.
-4. Set `APP_JWT_SECRET` to a Base64-encoded random secret of at least 32 bytes (auth/JWT is the next implementation phase).
-5. Run `TmdtTtsBackendApplication`.
+## Chạy ứng dụng
 
-`spring.jpa.hibernate.ddl-auto=validate`: Hibernate validates the schema; it does not create/alter tables.
+1. Tạo PostgreSQL database `TMDT_TTS` và chạy schema SQL đã thống nhất.
+2. Cấu hình `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`.
+3. Cấu hình `APP_JWT_SECRET` bằng chuỗi Base64 chứa ít nhất 32 byte ngẫu nhiên.
+4. Chạy `TmdtTtsBackendApplication` trên cổng 8080.
 
-## Implemented starter endpoints
-- `GET /api/categories` — active categories
-- `GET /api/categories/{id}` — category details
-- `GET /api/products` — active products; optional `keyword` and `categoryId`
-- `GET /api/products/{id}` — active product details
-- `GET /api/products/slug/{slug}` — active product by slug
+Hibernate dùng `ddl-auto: validate`; ứng dụng chỉ kiểm tra schema, không tự tạo/sửa bảng.
 
-## Important scope note
-This is the first runnable foundation, not the complete Figma backend yet. The remaining work is auth/JWT + roles, address/account, product images/variants/admin CRUD, cart/wishlist, checkout/order/order history, coupon validation, VNPay create-payment + verified return/IPN, reviews/returns, contact/newsletter, and Postman collection. Implement those in stages and preserve the provided PostgreSQL schema/column names. Do not mark a VNPay order paid from the browser return alone; validate the signature, amount and provider response, and make IPN idempotent.
+Để dùng VNPay, cấu hình thêm `APP_VNPAY_TMN_CODE`, `APP_VNPAY_HASH_SECRET`, `APP_VNPAY_RETURN_URL` (URL frontend nhận redirect) và `APP_VNPAY_IPN_URL` (URL public trỏ tới `/api/payments/vnpay/ipn`). Có thể đặt `APP_VNPAY_PAY_URL`; mặc định là sandbox. Chỉ IPN có chữ ký hợp lệ mới cập nhật thanh toán thành công.
+
+## API
+
+Request/response mẫu, quyền truy cập và danh sách endpoint ở [docs/API.md](docs/API.md). API yêu cầu đăng nhập nhận header `Authorization: Bearer <token>`. API danh mục, sản phẩm, xác thực và gửi liên hệ được mở công khai.
+
+Các luồng đã có: xác thực khách hàng, đọc danh mục/sản phẩm, giỏ hàng, wishlist, checkout COD/VNPay, xem/hủy đơn đang chờ, thông tin cá nhân/địa chỉ và form liên hệ. Trang About và 404 là nội dung frontend.
+
+Phần quản trị sản phẩm/đơn hàng, newsletter, đánh giá và trả hàng chưa triển khai vì không cần cho luồng mua hàng khách hàng cốt lõi hiện tại.

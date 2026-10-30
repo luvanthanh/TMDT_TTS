@@ -8,4 +8,7 @@ public interface ProductRepository extends JpaRepository<Product,Long>{
  List<Product> findByProductStatus(String status);
  List<Product> findByProductCategory_CategoryIdAndProductStatus(Long categoryId,String status);
  List<Product> findByProductNameContainingIgnoreCaseAndProductStatus(String keyword,String status);
+ List<Product> findByProductCategory_CategoryIdAndProductNameContainingIgnoreCaseAndProductStatus(Long categoryId,String keyword,String status);
+ List<Product> findByProductIsFeaturedTrueAndProductStatus(String status);
+ List<Product> findByProductIsFlashSaleTrueAndProductStatus(String status);
 }

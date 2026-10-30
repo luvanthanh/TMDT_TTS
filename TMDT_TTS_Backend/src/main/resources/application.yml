@@ -22,3 +22,9 @@ app:
     # Set APP_JWT_SECRET to a base64-encoded secret of at least 32 bytes before running.
     secret: ${APP_JWT_SECRET:}
     expiration-ms: ${APP_JWT_EXPIRATION_MS:86400000}
+  vnpay:
+    tmn-code: ${APP_VNPAY_TMN_CODE:}
+    hash-secret: ${APP_VNPAY_HASH_SECRET:}
+    pay-url: ${APP_VNPAY_PAY_URL:https://sandbox.vnpayment.vn/paymentv2/vpcpay.html}
+    return-url: ${APP_VNPAY_RETURN_URL:}
+    ipn-url: ${APP_VNPAY_IPN_URL:}
