@@ -1,5 +1,6 @@
 package com.tmdttts.backend.service;
 
+import com.tmdttts.backend.security.JwtUserPrincipal;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

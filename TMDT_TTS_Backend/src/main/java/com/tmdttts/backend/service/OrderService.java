@@ -1,9 +1,11 @@
 package com.tmdttts.backend.service;
 
-import com.tmdttts.backend.dto.Requests;
-import com.tmdttts.backend.dto.Responses;
+import com.tmdttts.backend.dto.request.order.CheckoutRequest;
+import com.tmdttts.backend.dto.response.order.OrderResponse;
+import com.tmdttts.backend.dto.response.order.CheckoutResponse;
+
 import com.tmdttts.backend.entity.*;
-import com.tmdttts.backend.mapper.ApiMapper;
+import com.tmdttts.backend.mapper.OrderMapper;
 import com.tmdttts.backend.repository.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -19,14 +21,14 @@ public class OrderService {
     private final ProductVariantRepository variants; private final OrderRepository orders; private final OrderItemRepository orderItems;
     private final OrderStatusHistoryRepository history; private final CouponRepository coupons;
     private final CouponRedemptionRepository redemptions; private final PaymentRepository payments;
-    private final ApiMapper mapper; private final VnpayService vnpay;
+    private final OrderMapper mapper; private final VnpayService vnpay;
     public OrderService(UserRepository users,CartRepository carts,CartItemRepository cartItems,ProductVariantRepository variants,
             OrderRepository orders,OrderItemRepository orderItems,OrderStatusHistoryRepository history,CouponRepository coupons,
-            CouponRedemptionRepository redemptions,PaymentRepository payments,ApiMapper mapper,VnpayService vnpay) {
+            CouponRedemptionRepository redemptions,PaymentRepository payments,OrderMapper mapper,VnpayService vnpay) {
         this.users=users;this.carts=carts;this.cartItems=cartItems;this.variants=variants;this.orders=orders;this.orderItems=orderItems;
         this.history=history;this.coupons=coupons;this.redemptions=redemptions;this.payments=payments;this.mapper=mapper;this.vnpay=vnpay;
     }
-    @Transactional public Responses.CheckoutResult checkout(Long userId,Requests.Checkout request,String clientIp) {
+    @Transactional public CheckoutResponse checkout(Long userId,CheckoutRequest request,String clientIp) {
         User user=users.findById(userId).orElseThrow(()->new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Tài khoản không tồn tại"));
         Cart cart=carts.findByCartUser_UserId(userId).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST,"Giỏ hàng đang trống"));
         List<CartItem> cartLines=cartItems.findByCartItemCart_CartIdOrderByCartItemAddedAtAsc(cart.getCartId());
@@ -72,23 +74,23 @@ public class OrderService {
         String paymentUrl=null;
         if("VNPAY".equals(method)){if(order.getOrderTotalAmount().signum()<=0)throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Đơn hàng VNPay phải có giá trị lớn hơn 0");Payment payment=new Payment();payment.setPaymentOrder(order);payment.setPaymentProvider("VNPAY");payment.setPaymentTransactionRef(order.getOrderCode());payment.setPaymentAmount(order.getOrderTotalAmount());payments.save(payment);
             paymentUrl=vnpay.createPaymentUrl(payment.getPaymentTransactionRef(),order.getOrderTotalAmount().movePointRight(2).longValueExact(),clientIp,"Thanh toan "+order.getOrderCode());}
-        return new Responses.CheckoutResult(mapper.order(order,orderItems.findByOrderItemOrder_OrderIdOrderByOrderItemIdAsc(order.getOrderId())),paymentUrl);
+        return new CheckoutResponse(mapper.toResponse(order,orderItems.findByOrderItemOrder_OrderIdOrderByOrderItemIdAsc(order.getOrderId())),paymentUrl);
     }
-    @Transactional(readOnly=true) public List<Responses.Order> myOrders(Long userId) {
-        return orders.findByOrderUser_UserIdOrderByOrderCreatedAtDesc(userId).stream().map(o->mapper.order(o,orderItems.findByOrderItemOrder_OrderIdOrderByOrderItemIdAsc(o.getOrderId()))).toList();
+    @Transactional(readOnly=true) public List<OrderResponse> myOrders(Long userId) {
+        return orders.findByOrderUser_UserIdOrderByOrderCreatedAtDesc(userId).stream().map(o->mapper.toResponse(o,orderItems.findByOrderItemOrder_OrderIdOrderByOrderItemIdAsc(o.getOrderId()))).toList();
     }
-    @Transactional(readOnly=true) public Responses.Order getMyOrder(Long userId,Long orderId) {
+    @Transactional(readOnly=true) public OrderResponse getMyOrder(Long userId,Long orderId) {
         Order o=orders.findByOrderIdAndOrderUser_UserId(orderId,userId).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Không tìm thấy đơn hàng"));
-        return mapper.order(o,orderItems.findByOrderItemOrder_OrderIdOrderByOrderItemIdAsc(o.getOrderId()));
+        return mapper.toResponse(o,orderItems.findByOrderItemOrder_OrderIdOrderByOrderItemIdAsc(o.getOrderId()));
     }
-    @Transactional public Responses.Order cancel(Long userId,Long orderId) {
+    @Transactional public OrderResponse cancel(Long userId,Long orderId) {
         Order o=orders.findByOrderIdAndOrderUser_UserId(orderId,userId).orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Không tìm thấy đơn hàng"));
         if(!"PENDING".equals(o.getOrderStatus())||"PAID".equals(o.getOrderPaymentStatus())||("VNPAY".equals(o.getOrderPaymentMethod())&&"PENDING".equals(o.getOrderPaymentStatus())))throw new ResponseStatusException(HttpStatus.CONFLICT,"Chỉ có thể hủy đơn chưa thanh toán và không có giao dịch đang xử lý");
         for(OrderItem item:orderItems.findByOrderItemOrder_OrderIdOrderByOrderItemIdAsc(orderId))if(item.getOrderItemProductVariant()!=null){var v=variants.findByIdForUpdate(item.getOrderItemProductVariant().getProductVariantId()).orElse(null);if(v!=null)v.setProductVariantStockQuantity(v.getProductVariantStockQuantity()+item.getOrderItemQuantity());}
         o.setOrderStatus("CANCELLED");if("PENDING".equals(o.getOrderPaymentStatus()))o.setOrderPaymentStatus("FAILED");
         OrderStatusHistory h=new OrderStatusHistory();h.setOrderStatusHistoryOrder(o);h.setOrderStatusHistoryOldStatus("PENDING");h.setOrderStatusHistoryNewStatus("CANCELLED");h.setOrderStatusHistoryNote("Khách hàng hủy đơn");h.setOrderStatusHistoryChangedByUser(users.findById(userId).orElse(null));history.save(h);
         redemptions.findByCouponRedemptionOrder_OrderId(orderId).ifPresent(r->{Coupon c=r.getCouponRedemptionCoupon();c.setCouponUsedCount(Math.max(0,c.getCouponUsedCount()-1));redemptions.delete(r);});
-        return mapper.order(o,orderItems.findByOrderItemOrder_OrderIdOrderByOrderItemIdAsc(orderId));
+        return mapper.toResponse(o,orderItems.findByOrderItemOrder_OrderIdOrderByOrderItemIdAsc(orderId));
     }
     @Transactional public Map<String,String> handleVnpayIpn(Map<String,String> params) {
         if(!vnpay.verify(params))return Map.of("RspCode","97","Message","Invalid signature");
@@ -105,5 +107,5 @@ public class OrderService {
         return Map.of("RspCode","00","Message","Confirm Success");
     }
     private BigDecimal unitPrice(ProductVariant v){Product p=v.getProductVariantProduct();return v.getProductVariantPriceOverride()!=null?v.getProductVariantPriceOverride():(p.getProductSalePrice()!=null?p.getProductSalePrice():p.getProductPrice());}
-    private String addressText(Requests.Checkout r){return String.join(", ",java.util.stream.Stream.of(r.addressDetail(),r.ward(),r.district(),r.city(),r.postalCode()).filter(s->s!=null&&!s.isBlank()).toList());}
+    private String addressText(CheckoutRequest r){return String.join(", ",java.util.stream.Stream.of(r.addressDetail(),r.ward(),r.district(),r.city(),r.postalCode()).filter(s->s!=null&&!s.isBlank()).toList());}
 }

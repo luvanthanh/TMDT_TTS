@@ -17,6 +17,8 @@ Hibernate dùng `ddl-auto: validate`; ứng dụng chỉ kiểm tra schema, khô
 
 Request/response mẫu, quyền truy cập và danh sách endpoint ở [docs/API.md](docs/API.md). API yêu cầu đăng nhập nhận header `Authorization: Bearer <token>`. API danh mục, sản phẩm, xác thực và gửi liên hệ được mở công khai.
 
+DTO được chia riêng theo chức năng tại `dto/request/<feature>` và `dto/response/<feature>`; mapper cũng tách theo resource (`ProductMapper`, `CartMapper`, `OrderMapper`, `AccountMapper`, `CategoryMapper`). Controller gọi service, service xử lý nghiệp vụ và mapper chuyển entity sang response DTO.
+
 Các luồng đã có: xác thực khách hàng, đọc danh mục/sản phẩm, giỏ hàng, wishlist, checkout COD/VNPay, xem/hủy đơn đang chờ, thông tin cá nhân/địa chỉ và form liên hệ. Trang About và 404 là nội dung frontend.
 
 Phần quản trị sản phẩm/đơn hàng, newsletter, đánh giá và trả hàng chưa triển khai vì không cần cho luồng mua hàng khách hàng cốt lõi hiện tại.

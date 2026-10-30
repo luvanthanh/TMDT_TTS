@@ -1,0 +1,1 @@
+import {api,initSite,saveSession,showMessage} from './api.js';initSite();document.querySelector('#login-form').onsubmit=async e=>{e.preventDefault();try{const data=await api('/auth/login',{method:'POST',auth:false,body:Object.fromEntries(new FormData(e.currentTarget))});saveSession(data);location.href='account.html'}catch(err){showMessage(err.message,'#form-message')}};

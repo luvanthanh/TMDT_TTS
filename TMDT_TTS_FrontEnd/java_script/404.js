@@ -1,0 +1,1 @@
+import {initSite} from './api.js';initSite();
