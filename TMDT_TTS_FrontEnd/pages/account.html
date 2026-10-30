@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Exclusive</title>
+    <meta name="description" content="Manage your account profile, orders, and settings at Exclusive.">
+    <meta property="og:title" content="My Account - Exclusive">
+    <meta property="og:description" content="Manage your account profile, orders, and settings at Exclusive.">
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/account.css">
+</head>
+<body data-page="signup">
+    <div id="site-header"></div>
+
+    <main class="container mt-80 mb-140">
+        <!-- TOP ROW -->
+        <div class="account-top">
+            <div class="breadcrumb">
+                <a href="../index.html">Home</a> / <span>My Account</span>
+            </div>
+            <div class="welcome-text">
+                Welcome! <span>Md Rimel</span>
+            </div>
+        </div>
+
+        <div class="account-layout">
+            <!-- SIDEBAR -->
+            <aside class="account-sidebar" aria-label="Account navigation">
+                <div class="sidebar-group">
+                    <h3>Manage My Account</h3>
+                    <ul>
+                        <li><a href="#" class="active">My Profile</a></li>
+                        <li><a href="#">Address Book</a></li>
+                        <li><a href="#">My Payment Options</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-group">
+                    <h3>My Orders</h3>
+                    <ul>
+                        <li><a href="#">My Returns</a></li>
+                        <li><a href="#">My Cancellations</a></li>
+                    </ul>
+                </div>
+                <div class="sidebar-group">
+                    <h3><a href="wishlist.html">My WishList</a></h3>
+                </div>
+            </aside>
+
+            <!-- CONTENT -->
+            <div class="account-content">
+                <h2 class="edit-title">Edit Your Profile</h2>
+
+                <form class="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="first-name">First Name</label>
+                            <input type="text" id="first-name" value="Md">
+                        </div>
+                        <div class="form-group">
+                            <label for="last-name">Last Name</label>
+                            <input type="text" id="last-name" value="Rimel">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" value="rimel1111@gmail.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="address">Address</label>
+                            <input type="text" id="address" value="Kingston, 5236, United State">
+                        </div>
+                    </div>
+
+                    <div class="password-changes">
+                        <label for="current-password">Password Changes</label>
+                        <input type="password" id="current-password" placeholder="Current Password">
+                        <input type="password" placeholder="New Password">
+                        <input type="password" placeholder="Confirm New Password">
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel">Cancel</button>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+    <script src="../assets/global.js"></script>
+</body>
+</html>
+
+
+

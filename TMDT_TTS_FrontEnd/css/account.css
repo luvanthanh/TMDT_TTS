@@ -1,2 +1,143 @@
-@import url('./base.css');
-.account-section{scroll-margin-top:100px}
+/* ACCOUNT SPECIFIC */
+
+.account-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 80px;
+}
+
+.welcome-text {
+  font-size: 14px;
+}
+
+.welcome-text span {
+  color: var(--primary-color);
+}
+
+.account-layout {
+  display: flex;
+  gap: 100px;
+}
+
+.account-sidebar {
+  width: 250px;
+}
+
+.sidebar-group {
+  margin-bottom: 24px;
+}
+
+.sidebar-group h3 {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 16px;
+}
+
+.sidebar-group h3 a {
+  color: black;
+  text-decoration: none;
+}
+
+.sidebar-group ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: 35px;
+}
+
+.sidebar-group ul li a {
+  color: var(--text-color-light);
+  font-size: 16px;
+  text-decoration: none;
+}
+
+.sidebar-group ul li a.active {
+  color: var(--primary-color);
+}
+
+/* CONTENT BOX */
+.account-content {
+  flex: 1;
+  background: #FFFFFF;
+  box-shadow: 0px 1px 13px rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  padding: 40px 80px;
+}
+
+.edit-title {
+  color: var(--primary-color);
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 24px;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.form-row {
+  display: flex;
+  gap: 50px;
+}
+
+.form-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 16px;
+}
+
+.form-group input {
+  background: var(--bg-secondary);
+  border: none;
+  padding: 16px;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+}
+
+.password-changes {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.password-changes label {
+  font-size: 16px;
+}
+
+.password-changes input {
+  background: var(--bg-secondary);
+  border: none;
+  padding: 16px;
+  border-radius: 4px;
+  font-size: 16px;
+  outline: none;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 32px;
+  margin-top: 24px;
+}
+
+.btn-cancel {
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.form-actions .btn-primary {
+  padding: 16px 48px;
+}

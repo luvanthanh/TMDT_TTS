@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Exclusive</title>
+    <meta name="description" content="View and manage items in your shopping cart at Exclusive.">
+    <meta property="og:title" content="Cart - Exclusive">
+    <meta property="og:description" content="View and manage items in your shopping cart at Exclusive.">
+    <link rel="icon" type="image/svg+xml" href="../images/favicon.svg">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/cart.css">
+</head>
+<body data-page="cart">
+
+    <div id="site-header"></div>
+
+    <main class="container mt-80 mb-140">
+        <!-- BREADCRUMB -->
+        <div class="breadcrumb">
+            <a href="../index.html">Home</a> / <span>Cart</span>
+        </div>
+
+        <!-- CART TABLE -->
+        <div class="cart-table" aria-label="Shopping cart items">
+            <div class="cart-header">
+                <div>Product</div>
+                <div>Price</div>
+                <div>Quantity</div>
+                <div>Subtotal</div>
+            </div>
+
+            <!-- Dynamic Cart Items injected via JS -->
+            <div id="cart-items-container"></div>
+        </div>
+
+        <!-- CART ACTIONS -->
+        <div class="cart-actions">
+            <button class="btn-outline">Return To Shop</button>
+            <button class="btn-outline">Update Cart</button>
+        </div>
+
+        <!-- CART BOTTOM -->
+        <div class="cart-bottom">
+            <div class="coupon-section">
+                <label for="coupon-code" class="sr-only">Coupon code</label>
+                <input type="text" id="coupon-code" placeholder="Coupon Code" class="coupon-input">
+                <button class="btn-primary">Apply Coupon</button>
+            </div>
+            
+            <div class="cart-total-box">
+                <h3>Cart Total</h3>
+                <div class="total-row">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal-val">$0</span>
+                </div>
+                <div class="total-row">
+                    <span>Shipping:</span>
+                    <span>Free</span>
+                </div>
+                <div class="total-row total-final">
+                    <span>Total:</span>
+                    <span id="cart-total-val">$0</span>
+                </div>
+                <div class="text-center mt-24">
+                    <a href="checkout.html" class="btn-primary" style="display: inline-block; text-decoration: none;">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="site-footer"></div>
+    <script src="../assets/global.js"></script>
+    <script src="../assets/cart.js"></script>
+</body>
+</html>
+
+
+
+

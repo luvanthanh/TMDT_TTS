@@ -1,0 +1,111 @@
+/* AUTH SPECIFIC (Log In / Sign Up) */
+
+.auth-container {
+  display: flex;
+  align-items: center;
+  gap: 130px;
+}
+
+.auth-image {
+  flex: 1;
+}
+
+.auth-image img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  background-color: #CBE4E8;
+}
+
+.auth-form-wrap {
+  width: 370px;
+  margin-right: 135px;
+  flex-shrink: 0;
+}
+
+.auth-form-wrap h2 {
+  font-size: 36px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  max-width: 100%;
+}
+
+.auth-form-wrap p {
+  font-size: 16px;
+  margin-bottom: 48px;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.auth-form .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-form input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgba(0,0,0,0.3);
+  padding: 8px 0;
+  font-size: 16px;
+  outline: none;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 16px;
+  font-size: 16px;
+  margin-top: 8px;
+}
+
+.auth-google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  padding: 16px;
+  background: transparent;
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.auth-google-btn img {
+  width: 24px;
+  height: 24px;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 32px;
+  color: rgba(0,0,0,0.7);
+}
+
+.auth-footer a {
+  color: black;
+  font-weight: 500;
+  margin-left: 8px;
+  text-decoration: underline;
+}
+
+.auth-login-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.auth-btn-login {
+  padding: 16px 48px;
+}
+
+.forget-password {
+  color: var(--primary-color);
+  text-decoration: none;
+}
